@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
+import LandingPage from '@/pages/LandingPage'
 import AuthPage from '@/pages/AuthPage'
 import DashboardPage from '@/pages/DashboardPage'
 import OrdersPage from '@/pages/OrdersPage'
@@ -37,9 +38,10 @@ export default function App() {
 
   return (
     <Routes>
-      <Route path="/auth" element={user ? <Navigate to="/" replace /> : <AuthPage />} />
+      <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <LandingPage />} />
+      <Route path="/auth" element={user ? <Navigate to="/dashboard" replace /> : <AuthPage />} />
       <Route
-        path="/"
+        path="/dashboard"
         element={
           <ProtectedRoute>
             <AppLayout />

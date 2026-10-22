@@ -3,8 +3,8 @@ import { LayoutDashboard, ShoppingBag, LogOut, Shield } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 
 const navItems = [
-  { to: '/', icon: LayoutDashboard, label: 'Tableau de bord', end: true },
-  { to: '/orders', icon: ShoppingBag, label: 'Commandes', end: false },
+  { to: '/dashboard', icon: LayoutDashboard, label: 'Tableau de bord', end: true },
+  { to: '/dashboard/orders', icon: ShoppingBag, label: 'Commandes', end: false },
 ]
 
 export default function Sidebar() {

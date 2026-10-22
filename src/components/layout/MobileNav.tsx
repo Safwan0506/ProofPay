@@ -9,7 +9,7 @@ export default function MobileNav() {
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-navy-800/95 backdrop-blur-lg border-t border-navy-600/30">
       <div className="flex items-center justify-around py-2">
         <NavLink
-          to="/"
+          to="/dashboard"
           end
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 px-4 py-2 rounded-lg text-xs ${
@@ -21,7 +21,7 @@ export default function MobileNav() {
           <span>Dashboard</span>
         </NavLink>
         <NavLink
-          to="/orders"
+          to="/dashboard/orders"
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 px-4 py-2 rounded-lg text-xs ${
               isActive ? 'text-gold-400' : 'text-navy-400'

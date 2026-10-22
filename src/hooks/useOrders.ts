@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Order, OrderStatus } from '@/types/database'
 
@@ -17,34 +17,40 @@ export function useOrders() {
     paymentMethod: '',
   })
 
-  const fetchOrders = useCallback(async () => {
-    setLoading(true)
-    let query = supabase
-      .from('orders')
-      .select('*')
-      .order('created_at', { ascending: false })
+  const fetchOrders = async () => {
+    try {
+      setLoading(true)
+      let query = supabase
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false })
 
-    if (filters.status !== 'all') {
-      query = query.eq('status', filters.status)
-    }
-    if (filters.paymentMethod) {
-      query = query.eq('payment_method', filters.paymentMethod)
-    }
-    if (filters.search) {
-      query = query.or(
-        `customer_name.ilike.%${filters.search}%,order_code.ilike.%${filters.search}%`
-      )
-    }
+      if (filters.status !== 'all') {
+        query = query.eq('status', filters.status)
+      }
+      if (filters.paymentMethod) {
+        query = query.eq('payment_method', filters.paymentMethod)
+      }
+      if (filters.search) {
+        query = query.or(
+          `customer_name.ilike.%${filters.search}%,order_code.ilike.%${filters.search}%`
+        )
+      }
 
-    const { data, error } = await query
-    if (error) throw error
-    setOrders((data as Order[]) ?? [])
-    setLoading(false)
-  }, [filters])
+      const { data, error } = await query
+      if (error) throw error
+      setOrders((data as Order[]) ?? [])
+    } catch (err) {
+      console.error('Error fetching orders:', err)
+      setOrders([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     fetchOrders()
-  }, [fetchOrders])
+  }, [filters])
 
   const createOrder = async (order: Omit<Order, 'id' | 'user_id' | 'created_at' | 'updated_at'>) => {
     const { data: { user } } = await supabase.auth.getUser()

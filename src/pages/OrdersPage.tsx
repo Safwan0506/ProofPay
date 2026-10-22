@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Plus, Search } from 'lucide-react'
 import { useOrders } from '@/hooks/useOrders'
 import OrderForm from '@/components/orders/OrderForm'
@@ -8,6 +8,11 @@ import toast from 'react-hot-toast'
 export default function OrdersPage() {
   const [showForm, setShowForm] = useState(false)
   const { orders, loading, filters, setFilters, createOrder, refresh } = useOrders()
+
+  useEffect(() => {
+    // Force refresh au chargement
+    refresh()
+  }, [])
 
   const handleCreateOrder = async (data: any) => {
     try {
@@ -71,7 +76,12 @@ export default function OrdersPage() {
           <div className="w-8 h-8 border-2 border-gold-500 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : orders.length > 0 ? (
-        <OrdersList orders={orders} />
+        <>
+          <div className="text-sm text-gold-400 mb-4">
+            {orders.length} commande(s) trouvée(s)
+          </div>
+          <OrdersList orders={orders} />
+        </>
       ) : (
         <div className="text-center py-12">
           <p className="text-navy-400">Aucune commande trouvée</p>
